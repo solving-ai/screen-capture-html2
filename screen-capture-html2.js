@@ -72,16 +72,13 @@
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
     async function startCapturing() {
-      const results = [];
-      for (let i = 0; i < 5; i++) {
-        const canvas = await html2canvas(document.body);
-        results.push(canvas.toDataURL("image/png"));
-        await sleep(5000);
-      }
-
       const resultBox = document.getElementById("html2-results");
       resultBox.innerHTML = "";
-      results.forEach((src, i) => {
+      document.getElementById("html2-modal").style.display = "block";
+
+      for (let i = 0; i < 20; i++) {
+        const canvas = await html2canvas(document.body);
+        const src = canvas.toDataURL("image/png");
         const div = document.createElement("div");
         div.className = "html2-thumb";
         div.innerHTML = `
@@ -93,9 +90,8 @@
           <hr/>
         `;
         resultBox.appendChild(div);
-      });
-
-      document.getElementById("html2-modal").style.display = "block";
+        await sleep(1000);
+      }
     }
 
     document.getElementById("capture-html2-btn").onclick = startCapturing;
