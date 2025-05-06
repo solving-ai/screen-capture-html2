@@ -25,6 +25,10 @@
         border-radius: 100px;
         cursor: pointer;
         z-index: 9999;
+        transition: background 0.3s ease;
+      }
+      #capture-html2-btn:hover {
+        background: #218838;
       }
       #html2-modal {
         display: none;
@@ -72,11 +76,15 @@
     const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
     async function startCapturing() {
+      const btn = document.getElementById("capture-html2-btn");
+      btn.disabled = true;
+      btn.textContent = "Tomando fotos... espera 5 segundos";
+
       const resultBox = document.getElementById("html2-results");
       resultBox.innerHTML = "";
       document.getElementById("html2-modal").style.display = "block";
 
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 5; i++) {
         const canvas = await html2canvas(document.body);
         const src = canvas.toDataURL("image/png");
         const div = document.createElement("div");
@@ -92,6 +100,9 @@
         resultBox.appendChild(div);
         await sleep(1000);
       }
+
+      btn.disabled = false;
+      btn.textContent = "Capturar HTML2";
     }
 
     document.getElementById("capture-html2-btn").onclick = startCapturing;
@@ -99,3 +110,4 @@
 
   loadHtml2Canvas(startPlugin);
 })();
+
